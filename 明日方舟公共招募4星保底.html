@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5个TAG</title>
+    <style type="text/css">
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        .flip-horizontal {
+        -moz-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1); 
+        -o-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: fliph; /*IE*/ 
+        }
+        #start{
+            position:absolute;
+            font-size: 10px;
+            left: 357px;
+            top:276px;
+        }
+        #title{
+            text-align: center;
+        }
+        #tagselect{
+            background-color: rgb(248, 248, 248);
+            margin: 15px 350px;
+            border: 3px dashed rgb(248, 248, 248);
+            border-radius: 0.5em;
+        }
+        #sex{
+            display: flex;
+            margin: 5px;
+        }
+        .tagtype{
+            color: white;
+            font-weight: bold;
+            background-color: #97c5e0;
+            padding: 10px 28px;
+            border: 1px solid #97c5e0;
+            border-radius: 0.2em;
+            height: 25px;
+        }
+        .tag{
+            cursor: pointer;
+            padding: 4px 9px;
+            border: 1px solid;
+            border-radius: 0.2em;
+            margin-top: 7px;
+            margin-left: 10px;
+            height: 25px;
+        }
+        li{
+            list-style-type:none;
+        }
+        .tag:hover{
+            background-color: antiquewhite;
+        }
+        .selected{
+            color: white;
+            border-color: black;
+            background-color: #97c5e0;
+        }
+        .selected:hover{
+            color: black;
+            background-color: #97c5e0;
+        }
+        #pos{
+            display: flex;
+            margin: 5px;
+        }
+        #classname{
+            display: flex;
+            margin: 5px;
+        }
+        #tags{
+            display: flex;
+            margin: 5px;
+        }
+        .outs{
+            font-size: 30px;
+        }
+        #show{
+            font-size: 20px;
+        }
+        #amiya{
+            height: 150px;
+            width: 150px;
+            position: absolute;
+            right: 355px;
+            top: 60px;
+            -moz-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1); 
+            -o-transform: scaleX(-1);
+            transform: scaleX(-1);
+            filter: fliph; /*IE*/ 
+        }
+        #amiya:hover{
+            cursor: pointer;
+        }
+        
+        #result{
+            background-color: rgb(248, 248, 248);
+            margin: 15px 350px;
+            border: 3px dashed rgb(248, 248, 248);
+            border-radius: 0.5em;
+        }
+        /* #comeout{
+            margin: 10px;
+            text-align: center
+        } */
+    </style>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+    <script>
+        var arklist = [
+{"name_zh": "杜宾", "sex": "女", "operator_class": "近卫", "stars": "4", "tags": "近战位, 支援, 输出", "img_src": "http://p2.qhimg.com/dr/80__/t0115aa310877b07f77.png"},
+{"name_zh": "推进之王", "sex": "女", "operator_class": "先锋", "stars": "6", "tags": "近战位, 费用回复, 输出", "img_src": "http://p3.qhimg.com/dr/80__/t01c502355dfb308d1d.png"},
+{"name_zh": "白面鸮", "sex": "女", "operator_class": "医疗", "stars": "5", "tags": "远程位, 治疗, 支援", "img_src": "http://p4.qhimg.com/dr/80__/t01c30f9d9e22ac92c6.png"},
+{"name_zh": "德克萨斯", "sex": "女", "operator_class": "先锋", "stars": "5", "tags": "控场, 近战位, 费用回复", "img_src": "http://p3.qhimg.com/dr/80__/t01fec5ad1cac71ea8f.png"},
+{"name_zh": "夜刀", "sex": "女", "operator_class": "先锋", "stars": "2", "tags": "近战位, 新手", "img_src": "http://p7.qhimg.com/dr/80__/t01c03c70d182949d70.png"},
+{"name_zh": "芬", "sex": "女", "operator_class": "先锋", "stars": "3", "tags": "近战位, 费用回复", "img_src": "http://p6.qhimg.com/dr/80__/t0112ded5e2c886e2ed.png"},
+{"name_zh": "幽灵鲨", "sex": "女", "operator_class": "近卫", "stars": "5", "tags": "近战位, 群攻, 生存", "img_src": "http://p1.qhimg.com/dr/80__/t0144bc8bb6c3b82fe5.png"},
+{"name_zh": "凛冬", "sex": "女", "operator_class": "先锋", "stars": "5", "tags": "支援, 近战位, 费用回复", "img_src": "http://p0.qhimg.com/dr/80__/t01e318e95d7934d59a.png"},
+{"name_zh": "巡林者", "sex": "男", "operator_class": "狙击", "stars": "2", "tags": "远程位, 新手", "img_src": "http://p0.qhimg.com/dr/80__/t01e04a4801d5271be1.png"},
+{"name_zh": "杜林", "sex": "女", "operator_class": "术师", "stars": "2", "tags": "远程位, 新手", "img_src": "http://p4.qhimg.com/dr/80__/t012bbe10ecd4125bf2.png"},
+{"name_zh": "克洛丝", "sex": "女", "operator_class": "狙击", "stars": "3", "tags": "远程位, 输出", "img_src": "http://p1.qhimg.com/dr/80__/t01c1bfbb9233daccd4.png"},
+{"name_zh": "炎熔", "sex": "女", "operator_class": "术师", "stars": "3", "tags": "远程位, 群攻", "img_src": "http://p3.qhimg.com/dr/80__/t01651c49953d8bb071.png"},
+{"name_zh": "夜烟", "sex": "女", "operator_class": "术师", "stars": "4", "tags": "削弱, 远程位, 输出", "img_src": "http://p7.qhimg.com/dr/80__/t0117ba7620bc644449.png"},
+{"name_zh": "普罗旺斯", "sex": "女", "operator_class": "狙击", "stars": "5", "tags": "远程位, 输出", "img_src": "http://p4.qhimg.com/dr/80__/t012ac05476f3e84b0b.png"},
+{"name_zh": "白雪", "sex": "女", "operator_class": "狙击", "stars": "4", "tags": "远程位, 群攻, 减速", "img_src": "http://p5.qhimg.com/dr/80__/t0118b51415939706cc.png"},
+{"name_zh": "远山", "sex": "女", "operator_class": "术师", "stars": "4", "tags": "远程位, 群攻", "img_src": "http://p1.qhimg.com/dr/80__/t016689d1382b22924d.png"},
+{"name_zh": "能天使", "sex": "女", "operator_class": "狙击", "stars": "6", "tags": "远程位, 输出", "img_src": "http://p7.qhimg.com/dr/80__/t019c37b9d9b5ea1a5c.png"},
+{"name_zh": "蓝毒", "sex": "女", "operator_class": "狙击", "stars": "5", "tags": "远程位, 输出", "img_src": "http://p7.qhimg.com/dr/80__/t01c2d752ccca46acc3.png"},
+{"name_zh": "流星", "sex": "女", "operator_class": "狙击", "stars": "4", "tags": "远程位, 输出, 削弱", "img_src": "http://p0.qhimg.com/dr/80__/t01269411046deb1bc2.png"},
+{"name_zh": "星熊", "sex": "女", "operator_class": "重装", "stars": "6", "tags": "近战位, 输出, 防护", "img_src": "http://p5.qhimg.com/dr/80__/t01ed97940a904fe79d.png"},
+{"name_zh": "红", "sex": "女", "operator_class": "特种", "stars": "5", "tags": "近战位, 控场, 快速复活", "img_src": "http://p5.qhimg.com/dr/80__/t01f045b4be633c7b14.png"},
+{"name_zh": "黑角", "sex": "男", "operator_class": "重装", "stars": "2", "tags": "近战位, 新手", "img_src": "http://p0.qhimg.com/dr/80__/t017d69dce86507075e.png"},
+{"name_zh": "末药", "sex": "女", "operator_class": "医疗", "stars": "4", "tags": "远程位, 治疗", "img_src": "http://p5.qhimg.com/dr/80__/t0164c87bae000dcd69.png"},
+{"name_zh": "赫默", "sex": "女", "operator_class": "医疗", "stars": "5", "tags": "远程位, 治疗", "img_src": "http://p9.qhimg.com/dr/80__/t01ae211dc87d436afa.png"},
+{"name_zh": "蛇屠箱", "sex": "女", "operator_class": "重装", "stars": "4", "tags": "近战位, 防护", "img_src": "http://p2.qhimg.com/dr/80__/t012603ad559fe16630.png"},
+{"name_zh": "闪灵", "sex": "女", "operator_class": "医疗", "stars": "6", "tags": "远程位, 支援, 治疗", "img_src": "http://p0.qhimg.com/dr/80__/t01530756367f2cee1c.png"},
+{"name_zh": "芙蓉", "sex": "女", "operator_class": "医疗", "stars": "3", "tags": "远程位, 治疗", "img_src": "http://p7.qhimg.com/dr/80__/t01cc057775b9b8d2ea.png"},
+{"name_zh": "临光", "sex": "女", "operator_class": "重装", "stars": "5", "tags": "近战位, 防护, 治疗", "img_src": "http://p1.qhimg.com/dr/80__/t018f43603ad070b485.png"},
+{"name_zh": "米格鲁", "sex": "女", "operator_class": "重装", "stars": "3", "tags": "近战位, 防护", "img_src": "http://p3.qhimg.com/dr/80__/t01c064f122e000a7b7.png"},
+{"name_zh": "雷蛇", "sex": "女", "operator_class": "重装", "stars": "5", "tags": "近战位, 防护, 输出", "img_src": "http://p4.qhimg.com/dr/80__/t019d88ea4258977505.png"},
+{"name_zh": "伊芙利特", "sex": "女", "operator_class": "术师", "stars": "6", "tags": "远程位, 群攻, 削弱", "img_src": "http://p8.qhimg.com/dr/80__/t01665df6d2f7ffdc66.png"},
+{"name_zh": "塞雷娅", "sex": "女", "operator_class": "重装", "stars": "6", "tags": "近战位, 支援, 防护, 治疗", "img_src": "http://p2.qhimg.com/dr/80__/t012dd0eaddfe75600b.png"},
+{"name_zh": "银灰", "sex": "男", "operator_class": "近卫", "stars": "6", "tags": "近战位, 输出, 支援", "img_src": "http://p8.qhimg.com/dr/80__/t0198c1592aaa1d557b.png"},
+{"name_zh": "初雪", "sex": "女", "operator_class": "辅助", "stars": "5", "tags": "远程位, 削弱", "img_src": "http://p3.qhimg.com/dr/80__/t0143b62127bdc254d6.png"},
+{"name_zh": "因陀罗", "sex": "女", "operator_class": "近卫", "stars": "5", "tags": "近战位, 输出, 生存", "img_src": "http://p2.qhimg.com/dr/80__/t016a2f800bb2bd65ee.png"},
+{"name_zh": "艾丝黛尔", "sex": "女", "operator_class": "近卫", "stars": "4", "tags": "近战位, 群攻, 生存", "img_src": "http://p5.qhimg.com/dr/80__/t010bb1c8b4c334b5a0.png"},
+{"name_zh": "史都华德", "sex": "男", "operator_class": "术师", "stars": "3", "tags": "远程位, 输出", "img_src": "http://p4.qhimg.com/dr/80__/t0179edfff56ec456df.png"},
+{"name_zh": "夜莺", "sex": "女", "operator_class": "医疗", "stars": "6", "tags": "远程位, 治疗, 支援", "img_src": "http://p7.qhimg.com/dr/80__/t01a371828406834314.png"},
+{"name_zh": "华法琳", "sex": "女", "operator_class": "医疗", "stars": "5", "tags": "远程位, 治疗, 支援", "img_src": "http://p3.qhimg.com/dr/80__/t011d33ebbf64a2556d.png"},
+{"name_zh": "守林人", "sex": "女", "operator_class": "狙击", "stars": "5", "tags": "远程位, 输出, 爆发", "img_src": "http://p2.qhimg.com/dr/80__/t01fe9befb72c5fa20d.png"},
+{"name_zh": "狮蝎", "sex": "女", "operator_class": "特种", "stars": "5", "tags": "生存, 近战位, 输出", "img_src": "http://p9.qhimg.com/dr/80__/t011893c426074ce802.png"},
+{"name_zh": "火神", "sex": "女", "operator_class": "重装", "stars": "5", "tags": "近战位, 输出, 防护, 生存", "img_src": "http://p5.qhimg.com/dr/80__/t01869c7f64549bf461.png"},
+{"name_zh": "真理", "sex": "女", "operator_class": "辅助", "stars": "5", "tags": "远程位, 减速, 输出", "img_src": "http://p8.qhimg.com/dr/80__/t01afb8dd75627ff672.png"},
+{"name_zh": "慕斯", "sex": "女", "operator_class": "近卫", "stars": "4", "tags": "近战位, 输出", "img_src": "http://p1.qhimg.com/dr/80__/t0119f87682f7d8917b.png"},
+{"name_zh": "砾", "sex": "女", "operator_class": "特种", "stars": "4", "tags": "近战位, 快速复活, 防护", "img_src": "http://p0.qhimg.com/dr/80__/t01c035725472bf99fb.png"},
+{"name_zh": "暗索", "sex": "女", "operator_class": "特种", "stars": "4", "tags": "近战位, 位移", "img_src": "http://p9.qhimg.com/dr/80__/t0114386af7b5ab089b.png"},
+{"name_zh": "地灵", "sex": "女", "operator_class": "辅助", "stars": "4", "tags": "远程位, 减速", "img_src": "http://p6.qhimg.com/dr/80__/t01881bc81c3337410c.png"},
+{"name_zh": "调香师", "sex": "女", "operator_class": "医疗", "stars": "4", "tags": "远程位, 治疗", "img_src": "http://p0.qhimg.com/dr/80__/t01a216782933830c81.png"},
+{"name_zh": "陨星", "sex": "女", "operator_class": "狙击", "stars": "5", "tags": "远程位, 群攻, 削弱", "img_src": "http://p1.qhimg.com/dr/80__/t01076e24d8da6ffe44.png"},
+{"name_zh": "白金", "sex": "女", "operator_class": "狙击", "stars": "5", "tags": "远程位, 输出", "img_src": "http://p5.qhimg.com/dr/80__/t018f36f2056cfb3753.png"},
+{"name_zh": "香草", "sex": "女", "operator_class": "先锋", "stars": "3", "tags": "近战位, 费用回复", "img_src": "http://p4.qhimg.com/dr/80__/t01f064d97af7b444a7.png"},
+{"name_zh": "梅尔", "sex": "女", "operator_class": "辅助", "stars": "5", "tags": "远程位, 召唤, 控场", "img_src": "http://p0.qhimg.com/dr/80__/t012c060bf0c7065917.png"},
+{"name_zh": "可颂", "sex": "女", "operator_class": "重装", "stars": "5", "tags": "近战位, 位移, 防护", "img_src": "http://p8.qhimg.com/dr/80__/t015cb4a3a66c02d6ca.png"},
+{"name_zh": "崖心", "sex": "女", "operator_class": "特种", "stars": "5", "tags": "输出, 近战位, 位移", "img_src": "http://p6.qhimg.com/dr/80__/t011f882e0c430d51a2.png"},
+{"name_zh": "食铁兽", "sex": "女", "operator_class": "特种", "stars": "5", "tags": "减速, 近战位, 位移", "img_src": "http://p7.qhimg.com/dr/80__/t012e01eaf0e6fda37a.png"},
+{"name_zh": "清道夫", "sex": "女", "operator_class": "先锋", "stars": "4", "tags": "近战位, 费用回复, 输出", "img_src": "http://p1.qhimg.com/dr/80__/t01c236754d42051e9f.png"},
+{"name_zh": "霜叶", "sex": "女", "operator_class": "近卫", "stars": "4", "tags": "近战位, 减速, 输出", "img_src": "http://p2.qhimg.com/dr/80__/t019b6f499396ff0406.png"},
+{"name_zh": "古米", "sex": "女", "operator_class": "重装", "stars": "4", "tags": "近战位, 防护, 治疗", "img_src": "http://p6.qhimg.com/dr/80__/t012b8712083684ebe9.png"},
+{"name_zh": "角峰", "sex": "男", "operator_class": "重装", "stars": "4", "tags": "近战位, 防护", "img_src": "http://p7.qhimg.com/dr/80__/t0160caebbc46aa92d6.png"},
+{"name_zh": "玫兰莎", "sex": "女", "operator_class": "近卫", "stars": "3", "tags": "近战位, 输出, 生存", "img_src": "http://p1.qhimg.com/dr/80__/t01e1fe82f378388ef3.png"},
+{"name_zh": "安赛尔", "sex": "男", "operator_class": "医疗", "stars": "3", "tags": "远程位, 治疗", "img_src": "http://p7.qhimg.com/dr/80__/t013ee228947b0d0e66.png"},
+{"name_zh": "缠丸", "sex": "女", "operator_class": "近卫", "stars": "4", "tags": "输出, 近战位, 生存", "img_src": "http://p2.qhimg.com/dr/80__/t010f3fc472b4900b95.png"},
+{"name_zh": "阿消", "sex": "女", "operator_class": "特种", "stars": "4", "tags": "近战位, 位移", "img_src": "http://p4.qhimg.com/dr/80__/t018f48444dc04bab7f.png"},
+{"name_zh": "红豆", "sex": "女", "operator_class": "先锋", "stars": "4", "tags": "近战位, 输出, 费用回复", "img_src": "http://p8.qhimg.com/dr/80__/t01f1dfa4fb29b3fd6e.png"},
+{"name_zh": "杰西卡", "sex": "女", "operator_class": "狙击", "stars": "4", "tags": "远程位, 输出, 生存", "img_src": "http://p6.qhimg.com/dr/80__/t014605bfade2a6cba7.png"},
+{"name_zh": "12F", "sex": "男", "operator_class": "术师", "stars": "2", "tags": "远程位, 新手", "img_src": "http://p1.qhimg.com/dr/80__/t01fd747d872332cc23.png"},
+{"name_zh": "梓兰", "sex": "女", "operator_class": "辅助", "stars": "3", "tags": "远程位, 减速", "img_src": "http://p2.qhimg.com/dr/80__/t016c94f9edd3891f30.png"},
+{"name_zh": "翎羽", "sex": "女", "operator_class": "先锋", "stars": "3", "tags": "近战位, 输出, 费用回复", "img_src": "http://p0.qhimg.com/dr/80__/t012205ad0f9ddadd75.png"},
+{"name_zh": "Lancet-2", "sex": "女", "operator_class": "医疗", "stars": "1", "tags": "远程位, 治疗", "img_src": "http://p2.qhimg.com/dr/80__/t0109e543aa1b037551.png"},
+{"name_zh": "Castle-3", "sex": "男", "operator_class": "近卫", "stars": "1", "tags": "近战位, 支援", "img_src": "http://p2.qhimg.com/dr/80__/t01ab00c6878a07453d.png"},
+{"name_zh": "安德切尔", "sex": "男", "operator_class": "狙击", "stars": "3", "tags": "远程位, 输出", "img_src": "http://p0.qhimg.com/dr/80__/t016604e81077ccb1f6.png"},
+];
+        var maxnum;
+
+        var matchlist = {};
+        var matchnum = 1;
+        var comeout ={};
+        var outputcount = 1;
+        var faillist = [];
+        var tag = {
+            "1":[],
+            "2":[],
+            "3":[],
+            "4":[],
+            "5":[]
+        };
+
+        var tagnum = 1;
+        var selectedcount = 0;
+        var fivetag = [];
+        var fivetagtype = [];
+
+        var typelist = {
+            "sex":["男","女"],
+            "operator_class":["近卫","先锋","狙击","术师","重装","医疗","特种","辅助"],
+            "tags":["近战位","远程位","输出","治疗","防护","费用回复","控场","爆发",
+            "召唤","群攻","减速","削弱","快速复活","新手","位移","生存","支援"]
+        };
+        
+        
+        $(document).ready(function () {
+            // $.getJSON("公招池20190729.json",function(data){
+            //     // console.log(arklist);
+            //     arklist = data;
+            maxnum = Object.keys(arklist).length;
+            var sortequal = function(tags1,tags2){
+                tags1 = tags1.split("+");
+                tags2 = tags2.split("+");
+                if(tags1.sort().toString() == tags2.sort().toString()){
+                    return true;
+                }
+            }
+            var findtype = function(tagname){
+                if(1 + typelist.sex.indexOf(tagname)){
+                    return "sex";
+                }
+                if(1 + typelist.operator_class.indexOf(tagname)){
+                    return "operator_class";
+                }
+                if(1 + typelist.tags.indexOf(tagname)){
+                    return "tags";
+                }
+            };
+            // console.log(findtype("女"));        
+            var search = function(type,content){
+                let result = [];
+                for(let i = 0;i < maxnum;i++){
+                    if( 1 + arklist[i][type].indexOf(content)){
+                        //arklist[i].stars == 2 || arklist[i].stars == 4 || arklist[i].stars == 5                        
+                        if(arklist[i].stars != 6){                               
+                            result += i + ",";
+                        }                        
+                    }
+                }
+                result += content;
+                tag[tagnum] = result.split(",");
+                // console.log(tag)
+            };
+            // search("sex","女");
+            var match = function(type1,arr1,type2,arr2){
+                let arr3 = arr2.slice(0,-1).filter(function(v){
+                    return arr1.slice(0,-1).indexOf(v)!==-1 // 利用filter方法来遍历是否有相同的元素
+                })
+                if(arr3.length != 0){
+                    let type3 = type2 + "+" + type1;
+                    arr3 += "," + type3;
+                    matchlist[matchnum] = arr3.split(",");
+                    matchnum += 1;
+                }          
+            };
+            var matchfail = function(){
+                let imax = Object.keys(tag).length;
+                for(let i = 1;i <= imax - 2;i++){
+                    let fail12 = tag[i].slice(0,-1).filter(function(v){
+                        return tag[i+1].slice(0,-1).indexOf(v)!==-1 // 利用filter方法来遍历是否有相同的元素
+                        })
+                    if(fail12.length == 0){
+                        for(j = i+2;j <= imax;j++){
+                            let fail13 = tag[i].slice(0,-1).filter(function(v){
+                                return tag[j].slice(0,-1).indexOf(v)!==-1 // 利用filter方法来遍历是否有相同的元素
+                            })
+                            let fail23 = tag[i+1].slice(0,-1).filter(function(v){
+                                return tag[j].slice(0,-1).indexOf(v)!==-1 // 利用filter方法来遍历是否有相同的元素
+                            })
+                            if(fail13.length == 0 && fail23.length == 0){
+                                faillist += tag[i][tag[i].length-1] + "+" + tag[i+1][tag[i+1].length-1] + "+" + tag[j][tag[j].length-1] + ","
+                            }
+                        }
+                    }
+                }
+            }
+            // match("狙击",1,"输出",2);
+            var check = function(list){
+                let flag = 0;
+                for(let i = 0;i < Object.keys(list).length - 1;i++){
+                    if(arklist[list[i]].stars == 2 || arklist[list[i]].stars == 3){
+                        flag = 1;
+                    }
+                }
+                if(flag){
+                    return 1; 
+                }
+            }
+            var translate = function(list){
+                for(let i = 0;i < Object.keys(list).length - 1;i++){
+                    list[i] = arklist[list[i]].name_zh;
+                }
+                return list;
+            }
+            var selected = function(){
+                if($(this).hasClass("selected")){
+                    // console.log("111")
+                    $(this).removeClass("selected");
+                    selectedcount -=1;
+                }
+                else{
+                    if(selectedcount < 5){
+                        $(this).addClass("selected");
+                        selectedcount +=1;
+                    }
+                }
+            }
+            var load = function(){
+                if(selectedcount == 5){
+                    let fornow = [];
+                    $(".tag").each(function(){
+                        if($(this).hasClass("selected")){
+                            fornow += $(this).text() + ",";
+                        }
+                    })
+                    fornow = fornow.slice(0,-1);
+                    if(fornow != fivetag){
+                        let show = fornow + "";
+                        fivetag = fornow.split(",");
+                        $("#show").text(show);
+                    }
+                }
+            }
+            var ready = function(){
+                let Result = [];
+                for(let i = 0;i < Object.keys(fivetag).length;i++){
+                    Result += findtype(fivetag[i]) + ","
+                } 
+                Result = Result.slice(0,-1);
+                fivetagtype = Result.split(",");
+                for(let i = 0;i < Object.keys(fivetag).length;i++){
+                    search(fivetagtype[i],fivetag[i]);
+                    tagnum += 1;
+                }
+                tagnum = 1;
+            }
+            var start = function(){
+                load();
+                if(fivetag.length == 0){
+                    return;
+                }
+                $("#comeout").empty()
+                ready();
+                for(let i = 1;i <= Object.keys(tag).length;i++){
+                    if(check(tag[i])){
+                    }
+                    else{
+                        matchlist[matchnum] = tag[i];
+                        matchnum += 1;
+                    }
+                    for(let j = i;j <= Object.keys(tag).length;j++){
+                        if(i != j){
+                            match(tag[i][tag[i].length-1],tag[i],tag[j][tag[j].length-1],tag[j]); 
+                        }
+                    }
+                }
+                let max = Object.keys(matchlist).length;
+                for(let i = 1;i <= max;i++){
+                    // console.log(i)
+                    if(check(matchlist[i])){
+                        // console.log("found");
+                        for(let j = 1;j <= Object.keys(tag).length;j++){
+                            if(1 + matchlist[i][matchlist[i].length-1].indexOf(tag[j][tag[j].length-1])){ 
+                            }
+                            else{
+                                match(matchlist[i][matchlist[i].length-1],matchlist[i],tag[j][tag[j].length-1],tag[j]);
+                            }
+                        }
+                    }
+                }
+                for(let i = 1;i <= Object.keys(matchlist).length;i++){
+                    if(check(matchlist[i])){
+                    }
+                    else{
+                        let fornow = matchlist[i].slice();
+                        // comeout[matchlist[i][matchlist[i].length-1]] = translate(fornow).slice(0,-1);
+                        comeout[outputcount] = translate(fornow);
+                        outputcount +=1;
+                    }
+                }
+                if(Object.keys(comeout).length > 0){
+                    for(let i = 1;i <= Object.keys(comeout).length;i++){
+                        for(let j = i + 1;j <= Object.keys(comeout).length;j++){
+                            if(sortequal(comeout[i][comeout[i].length-1],comeout[j][comeout[j].length-1])){
+                                for(let z = i;z <= Object.keys(comeout).length - 1;z++){
+                                    comeout[z] = comeout[z + 1];
+                                }
+                                delete comeout[Object.keys(comeout).length];
+                                break;
+                            }
+                        }
+                    }
+                    let li= $("<li class='outs'></li>").text("存在以下四星保底组合：")
+                    $("#comeout").append(li);
+                    for(let i = 1;i <= Object.keys(comeout).length;i++){
+                        let fornow = comeout[i];
+                        let repl = fornow[0];
+                        fornow[0] = fornow[fornow.length-1];
+                        fornow[fornow.length-1] = repl;
+                        fornow = fornow + "";
+                        fornow = fornow.substring(0,fornow.indexOf(",")) + ":" + fornow.substring(fornow.indexOf(",") + 1);
+                        // fornow.replace(",",":")
+                        // console.log(fornow.indexOf(","));
+                        // console.log(fornow[fornow.indexOf(",")])
+                        let li= $("<li class='outs'></li>").text(fornow)
+                        $("#comeout").append(li);
+                    }
+                }
+                else{
+                    matchfail();
+                    if(faillist.length > 0){
+                        let li= $("<li type='font-size:20px' class='outs'></li>").text("不存在四星保底组合，建议选以下互相矛盾的三TAG组合：")
+                        $("#comeout").append(li);
+                        faillist = faillist.slice(0,-1);
+                        faillist = faillist.split(",");
+                        for(let i = 0;i < faillist.length;i++){
+                            let fornow = faillist[i];
+                            let li= $("<li class='outs'></li>").text(fornow)
+                            $("#comeout").append(li);
+                        }
+                    }
+                    else{
+                        let li= $("<li class='outs'></li>").text("不存在四星保底组合，也不存在互相矛盾的三TAG组合，建议刷新。")
+                        $("#comeout").append(li);
+                    }
+                }
+                matchlist = {};
+                matchnum = 1;
+                comeout = {};
+                outputcount = 1;
+                faillist = [];
+                tag = {
+                    "1":[],
+                    "2":[],
+                    "3":[],
+                    "4":[],
+                    "5":[]
+                };
+            }
+            
+            // $("#load").click(load);
+            $(" .tag").click(selected);
+            $("#amiya").click(function(){
+                start();
+            })
+        });
+    </script>
+</head>
+
+<body>
+<div>
+<h1 id="title">请输入公共招募的5个TAG</h1>
+<div id="start">※选好5个TAG后点驴开始</div>
+<div id="tagselect">
+    <!-- <button type="button" class="btn btn-primary">主要按钮</button> -->
+    <div id="pos">
+        <div class="tagtype">站位</div>
+        <div class="tag">近战位</div>
+        <div class="tag">远程位</div>
+    </div>
+
+    <div id="sex">
+        <div class="tagtype">性别</div>
+        <div class="tag">男</div>
+        <div class="tag">女</div>
+    </div>
+    
+    <div id="classname">
+        <div class="tagtype">职业</div>
+        <div class="tag">近卫</div>
+        <div class="tag">先锋</div>
+        <div class="tag">狙击</div>
+        <div class="tag">重装</div>
+        <div class="tag">特种</div>
+        <div class="tag">术师</div>
+        <div class="tag">医疗</div>
+        <div class="tag">辅助</div>
+    </div>
+
+    <div id="tags">
+        <div class="tagtype">特性</div>    
+        <div class="tag">输出</div>
+        <div class="tag">治疗</div>
+        <div class="tag">防护</div>
+        <div class="tag">费用回复</div>
+        <div class="tag">控场</div>
+        <div class="tag">爆发</div>
+        <div class="tag">召唤</div>
+        <div class="tag">群攻</div>
+        <div class="tag">减速</div>
+        <div class="tag">削弱</div>
+        <div class="tag">快速复活</div>
+        <div class="tag">新手</div>
+        <div class="tag">位移</div>
+        <div class="tag">生存</div>
+        <div class="tag">支援</div>
+    </div>
+</div>
+<div id="result">
+    <h2>你选择的TAG：</h2>
+    <div id="show"></div>
+    <!-- <div id="load">LOAD</div>  --> 
+    <h2>结果:</h2>
+    <ul id="comeout"></ul>
+    <!-- <pre id="comeout"></pre> -->
+    </div>
+</div>
+<img id="amiya" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565610107597&di=d4d48aa17f4fbbc155652bd5a8bf20c0&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F2ce017de0194d3356f77f8aa5682b65194f66d8c.gif">
+</img>
+</body>
+</html>
